@@ -1,11 +1,35 @@
 # tf-tb-visualisation
 This repository provides a starter code for using tensorboard via tensorflow for visualising embeddings
 
-Word Embeddings:
 
-For visualising word embeddings run the following from the command line:
+The following is the folder structure expected by the code:
+
+sample_data/
+    embeddings/
+	filename_embedding
+    images/
+	data/
+	metadata.txt
+    text/
+	metadata.txt
+
+
+The filename_embedding consists of the n_dimensional embeddings
+The data folder consists of all the images
+The metadata.txt for images consists of the following format: image_filename\tlabel (one to one mapping with embedding vector)
+The metadata.txt for text consists of the following format: label (one to one mapping with embedding vector)
+
+
+For visualising embeddings run the following from the command line:
 ```
-python visualise_text_embeddings.py -b $baseDir -f $filename_embedding -l $filename_label
+For word embeddings:
+
+python visualise_text_embeddings.py -b $baseDir -f $filename_embedding -m "text"
+
+For image embeddings:
+
+python visualise_text_embeddings.py -b $baseDir -f $filename_embedding -m "image"
+
 tensorboard --logdir=$baseDir
 ```
 
