@@ -21,15 +21,21 @@ The metadata.txt for text consists of the following format: label (one to one ma
 
 
 For visualising embeddings run the following from the command line:
-```
 For word embeddings:
 
+```
 python visualise_text_embeddings.py -b $baseDir -f $filename_embedding -m "text"
+```
 
 For image embeddings:
-
+```
 python visualise_text_embeddings.py -b $baseDir -f $filename_embedding -m "image"
+```
 
+Then finally run:
+```
 tensorboard --logdir=$baseDir
 ```
 
+### Acknowledgement
+I would like to sincerely thank [Anuj Shah](https://github.com/anujshah1003) for his data and code for sprite image. 
