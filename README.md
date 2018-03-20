@@ -24,12 +24,12 @@ For visualising embeddings run the following from the command line:
 For word embeddings:
 
 ```
-python visualise_text_embeddings.py -b $baseDir -f $filename_embedding -m "text"
+python visualise_embeddings.py -b $baseDir -f $filename_embedding -m "text"
 ```
 
 For image embeddings:
 ```
-python visualise_text_embeddings.py -b $baseDir -f $filename_embedding -m "image"
+python visualise_embeddings.py -b $baseDir -f $filename_embedding -m "image"
 ```
 
 Then finally run:
