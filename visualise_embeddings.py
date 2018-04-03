@@ -10,44 +10,55 @@ import cv2
 from utils import *
 import sys
 import logging
+import shutil
 
-def visualize_embeddings(basedir,embeddings,mode="text",metadata="metadata.txt"):
+class tsne_visualisation():
+
+	def __init__(self,basedir,embeddings,mode="text",metadata="metadata.txt"):
 	
-	if mode == "image":
-		if os.path.exists(os.path.join(basedir,"images")):
-			images = getImages(os.path.join(basedir,"images","data"),os.path.join(basedir,"images",metadata))
-			images = np.array(images)
-			sprite = images_to_sprite(images)
-			cv2.imwrite(os.path.join(basedir,"sprite.jpg"), sprite)
-		else:
-			logging.warning('[images] folder not found')
-			 
+		self.embeddings = embeddings
+		self.basedir = basedir
+		self.metadata = metadata
+		self.mode = mode
 
-	with tf.Session() as sess:
+		if mode == "image":
+			if os.path.exists(os.path.join(basedir,"images")):
+				images = getImages(os.path.join(basedir,"images","data"),os.path.join(basedir,"images",metadata))
+				self.images = np.array(images)
+				sprite = images_to_sprite(self.images)
+				cv2.imwrite(os.path.join(basedir,"sprite.jpg"), sprite)
+			else:
+				logging.warning('[images] folder not found')
 
-		embedding_var = tf.Variable(embeddings, name='embedding')
-		sess.run(embedding_var.initializer)
-		init = tf.global_variables_initializer()
-		init.run()
-		saver_embed = tf.train.Saver([embedding_var])
-		saver_embed.save(sess, './my-model.ckpt')
-		config = projector.ProjectorConfig()
+	def visualize_embeddings(self):
 		
-		embedding = config.embeddings.add()
-		embedding.tensor_name = embedding_var.name
+		with tf.Session() as sess:
+
+			embedding_var = tf.Variable(self.embeddings, name='embedding')
+			sess.run(embedding_var.initializer)
+			init = tf.global_variables_initializer()
+			init.run()
+
+			config = projector.ProjectorConfig()
+			config.model_checkpoint_path = os.path.join(self.basedir,'my-model.ckpt')
+			embedding = config.embeddings.add()
+			embedding.tensor_name = embedding_var.name
 
 
-		if mode=="text":
-			embedding.metadata_path = os.path.join(os.path.join(basedir,"text",metadata))
+			if self.mode=="text":
+				embedding.metadata_path = os.path.join(os.path.join(self.basedir,"text", self.metadata))
 
-		else:
-			embedding.sprite.image_path = os.path.join(basedir,"sprite.jpg")
-			embedding.sprite.single_image_dim.extend([images.shape[1], images.shape[1]])
+			else:
+				embedding.metadata_path = os.path.join(os.path.join(self.basedir,"images", self.metadata))
+				embedding.sprite.image_path = os.path.join(self.basedir,"sprite.jpg")
+				embedding.sprite.single_image_dim.extend([self.images.shape[1], self.images.shape[1]])
 
-		summary_writer = tf.summary.FileWriter(basedir)
-		projector.visualize_embeddings(summary_writer, config)
+			summary_writer = tf.summary.FileWriter(self.basedir)
+			projector.visualize_embeddings(summary_writer, config)
 
-		
+			# saves a configuration file that TensorBoard will read during startup.
+			saver_embed = tf.train.Saver([embedding_var])
+			saver_embed.save(sess, os.path.join(self.basedir,'my-model.ckpt'))
 
 
 if __name__ == '__main__':
@@ -62,5 +73,5 @@ if __name__ == '__main__':
 
 	embeddings = np.loadtxt(os.path.join(options.baseDir,"embeddings",options.filename_embeddings))
 
-
-	visualize_embeddings(options.baseDir, embeddings, mode=options.mode)
+	tsv = tsne_visualisation(options.baseDir, embeddings, mode=options.mode)
+	tsv.visualize_embeddings()
