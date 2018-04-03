@@ -4,14 +4,14 @@ This repository provides a starter code for using tensorboard via tensorflow for
 
 The following is the folder structure expected by the code:
 
-sample_data/
-	embeddings/
-		filename_embedding
-	images/
-		data/
-		metadata.txt
-	text/
-		metadata.txt
+* sample_data/
+	* embeddings/
+		* filename_embedding
+	* images/
+		* data/
+		* metadata.txt
+	* text/
+		* metadata.txt
 
 
 The filename_embedding consists of the n_dimensional embeddings
