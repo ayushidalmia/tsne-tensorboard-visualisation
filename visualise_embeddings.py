@@ -76,5 +76,7 @@ if __name__ == '__main__':
 
 	embeddings = np.loadtxt(os.path.join(options.baseDir,"embeddings",options.filename_embeddings))
 
-	tsv = tsne_visualisation(options.baseDir,embeddings, os.path.join(options.baseDir,"images"),mode=options.mode, metadata = options.filename_label)
+
+	tsv = tsne_visualisation(options.baseDir, embeddings, mode=options.mode, metadata = options.filename_label)
 	tsv.visualize_embeddings()
+
