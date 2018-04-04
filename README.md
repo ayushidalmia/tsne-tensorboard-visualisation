@@ -1,17 +1,18 @@
 # tf-tb-visualisation
-This repository provides a starter code for using tensorboard via tensorflow for visualising embeddings
 
+### How to run
+This repository provides a starter code for using tensorboard via tensorflow for visualising embeddings
 
 The following is the folder structure expected by the code:
 
-sample_data/
-	embeddings/
-		filename_embedding
-	images/
-		data/
-		metadata.txt
-	text/
-		metadata.txt
+* sample_data/
+	* embeddings/
+		* filename_embedding
+	* images/
+		* data/
+		* metadata.txt
+	* text/
+		* metadata.txt
 
 
 The filename_embedding consists of the n_dimensional embeddings
@@ -50,6 +51,10 @@ tensorboard --logdir=/Users/ayushi/Work/tf-tb-visualisation/sample_data/
 ```
 
 Note: Giving the complete path is important. 
+
+### Reading:
+* [Visualizing Data using t-SNE](http://www.jmlr.org/papers/volume9/vandermaaten08a/vandermaaten08a.pdf)
+* [How to use t-SNE efficiently](https://distill.pub/2016/misread-tsne/)
 
 ### Acknowledgement
 I would like to sincerely thank [Anuj Shah](https://github.com/anujshah1003) for his data and code for sprite image. 
