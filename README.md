@@ -23,21 +23,21 @@ The metadata.txt for text consists of the following format: label (one to one ma
 For visualising embeddings run the following from the command line:
 For word embeddings:
 
-```
-python visualise_embeddings.py -b $baseDir -f $filename_embedding -m "text"
+``` 
+python visualise_embeddings.py -b $baseDir -f $filename_embedding -m "text" -l $filename_label
 ```
 Example usage:
 ```
-python visualise_embeddings.py -b /Users/ayushi/Work/tf-tb-visualisation/sample_data/ -f feature_vectors_400_samples.txt -m text
+python visualise_embeddings.py -b /Users/ayushi/Work/tf-tb-visualisation/sample_data/ -f feature_vectors_400_samples.txt -m text -l metadata_text.txt
 ```
 
 For image embeddings:
 ```
-python visualise_embeddings.py -b $baseDir -f $filename_embedding -m "image"
+python visualise_embeddings.py -b $baseDir -f $filename_embedding -m "image" -l $filename_label
 ```
 Example usage:
 ```
-python visualise_embeddings.py -b /Users/ayushi/Work/tf-tb-visualisation/sample_data/ -f feature_vectors_400_samples.txt -m "image"
+python visualise_embeddings.py -b /Users/ayushi/Work/tf-tb-visualisation/sample_data/ -f feature_vectors_400_samples.txt -m "image" -l metadata_images.txt
 ```
 
 Then finally run:

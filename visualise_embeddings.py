@@ -23,10 +23,10 @@ class tsne_visualisation():
 
 		if mode == "image":
 			if os.path.exists(os.path.join(basedir,"images")):
-				images = getImages(os.path.join(basedir,"images","data"),os.path.join(basedir,"images",metadata))
+				images = getImages(os.path.join(basedir,"images"),os.path.join(basedir,"tsne",metadata))
 				self.images = np.array(images)
 				sprite = images_to_sprite(self.images)
-				cv2.imwrite(os.path.join(basedir,"sprite.jpg"), sprite)
+				cv2.imwrite(os.path.join(basedir,"tsne","sprite.jpg"), sprite)
 			else:
 				logging.warning('[images] folder not found')
 
@@ -40,17 +40,15 @@ class tsne_visualisation():
 			init.run()
 
 			config = projector.ProjectorConfig()
-			config.model_checkpoint_path = os.path.join(self.basedir,'my-model.ckpt')
+			config.model_checkpoint_path = os.path.join(self.basedir,"tsne",'my-model.ckpt')
 			embedding = config.embeddings.add()
 			embedding.tensor_name = embedding_var.name
 
 
-			if self.mode=="text":
-				embedding.metadata_path = os.path.join(os.path.join(self.basedir,"text", self.metadata))
+			embedding.metadata_path = os.path.join(os.path.join(self.basedir,"tsne", self.metadata))
 
-			else:
-				embedding.metadata_path = os.path.join(os.path.join(self.basedir,"images", self.metadata))
-				embedding.sprite.image_path = os.path.join(self.basedir,"sprite.jpg")
+			if self.mode=="image":
+				embedding.sprite.image_path = os.path.join(self.basedir,"tsne","sprite.jpg")
 				embedding.sprite.single_image_dim.extend([self.images.shape[1], self.images.shape[1]])
 
 			summary_writer = tf.summary.FileWriter(self.basedir)
@@ -58,7 +56,7 @@ class tsne_visualisation():
 
 			# saves a configuration file that TensorBoard will read during startup.
 			saver_embed = tf.train.Saver([embedding_var])
-			saver_embed.save(sess, os.path.join(self.basedir,'my-model.ckpt'))
+			saver_embed.save(sess, os.path.join(self.basedir,"tsne",'my-model.ckpt'))
 
 
 if __name__ == '__main__':
@@ -73,5 +71,5 @@ if __name__ == '__main__':
 
 	embeddings = np.loadtxt(os.path.join(options.baseDir,"embeddings",options.filename_embeddings))
 
-	tsv = tsne_visualisation(options.baseDir, embeddings, mode=options.mode)
+	tsv = tsne_visualisation(basedir = options.baseDir, embeddings = embeddings, mode=options.mode, metadata = options.filename_label)
 	tsv.visualize_embeddings()
