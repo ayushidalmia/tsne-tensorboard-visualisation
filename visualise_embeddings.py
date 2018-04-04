@@ -14,21 +14,26 @@ import shutil
 
 class tsne_visualisation():
 
-	def __init__(self,basedir,embeddings,mode="text",metadata="metadata.txt"):
+	def __init__(self,basedir,embeddings,image_folder,mode="text",metadata="metadata.txt"):
 	
 		self.embeddings = embeddings
 		self.basedir = basedir
 		self.metadata = metadata
 		self.mode = mode
+		self.image_folder = image_folder
 
 		if mode == "image":
-			if os.path.exists(os.path.join(basedir,"images")):
-				images = getImages(os.path.join(basedir,"images"),os.path.join(basedir,"tsne",metadata))
-				self.images = np.array(images)
-				sprite = images_to_sprite(self.images)
-				cv2.imwrite(os.path.join(basedir,"tsne","sprite.jpg"), sprite)
-			else:
-				logging.warning('[images] folder not found')
+			self._create_sprite_images()
+
+	def _create_sprite_images(self):
+
+		if os.path.exists(self.image_folder):
+			images = getImages(self.image_folder,os.path.join(self.basedir,"tsne",self.metadata))
+			self.images = np.array(images)
+			sprite = images_to_sprite(self.images)
+			cv2.imwrite(os.path.join(self.basedir,"tsne","sprite.jpg"), sprite)
+		else:
+			logging.warning('[images] folder not found')
 
 	def visualize_embeddings(self):
 		
@@ -71,5 +76,5 @@ if __name__ == '__main__':
 
 	embeddings = np.loadtxt(os.path.join(options.baseDir,"embeddings",options.filename_embeddings))
 
-	tsv = tsne_visualisation(basedir = options.baseDir, embeddings = embeddings, mode=options.mode, metadata = options.filename_label)
+	tsv = tsne_visualisation(options.baseDir,embeddings, os.path.join(options.baseDir,"images"),mode=options.mode, metadata = options.filename_label)
 	tsv.visualize_embeddings()
